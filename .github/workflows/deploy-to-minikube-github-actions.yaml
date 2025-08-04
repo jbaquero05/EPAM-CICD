@@ -18,7 +18,6 @@ jobs:
       run: |
         export SHELL=/bin/bash
         eval $(minikube -p minikube docker-env)
-        ls -al
         docker build -t devopshint/node-app:latest .
         echo "Verifying images:"
         docker images
@@ -34,4 +33,5 @@ jobs:
     - name: Test Service URLs
       run: |
         minikube service list
+        sleep 10
         minikube service nodejs-app --url
