@@ -33,5 +33,5 @@ jobs:
     - name: Test Service URLs
       run: |
         minikube service list
-        sleep 10
+        sleep 20
         minikube service nodejs-app --url
