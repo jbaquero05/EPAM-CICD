@@ -33,5 +33,17 @@ jobs:
     - name: Test Service URLs
       run: |
         minikube service list
-        sleep 20
-        minikube service nodejs-app --url
+    - name: Wait for Service to Respond
+      run: |
+        URL=$(minikube service nodejs-app --url)
+        echo "Waiting for HTTP 200 from $URL..."
+        for i in {1..20}; do
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+          if [ "$STATUS" -eq 200 ]; then
+            echo "Service is up and returned HTTP 200"
+            break
+          fi
+          echo "Service not ready yet (HTTP $STATUS). Retrying in 3s..."
+          sleep 3
+        done
+
